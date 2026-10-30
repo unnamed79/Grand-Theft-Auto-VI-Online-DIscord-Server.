@@ -79,3 +79,59 @@
     });
   });
 })();
+
+(() => {
+  'use strict';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const animations = new Set();
+  let observer;
+  function setup() {
+    if (reduced.matches || !('IntersectionObserver' in window)) return;
+    observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        const index = Number(entry.target.dataset.motionIndex || 0);
+        const offset = index % 2 ? 22 : -22;
+        if (!entry.target.animate) return;
+        const animation = entry.target.animate([
+          { opacity: .3, transform: 'translate3d(' + offset + 'px,24px,0)' },
+          { opacity: 1, transform: 'translate3d(0,0,0)' }
+        ], { duration: 650, easing: 'cubic-bezier(.2,.7,.2,1)', delay: (index % 3) * 55 });
+        animations.add(animation);
+        animation.onfinish = () => animations.delete(animation);
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll('.feature-card,.platform-card,.policy-card,.step,.callout,.section-top').forEach((node,index) => {
+      node.dataset.motionIndex = index;
+      observer.observe(node);
+    });
+  }
+  const region = document.querySelector('.hero,.page-intro');
+  if (region) {
+    const particles = document.createElement('div');
+    particles.className = 'motion-particles';
+    particles.setAttribute('aria-hidden','true');
+    for (let i=0;i<14;i++) {
+      const dot = document.createElement('i');
+      dot.style.setProperty('--x', ((i * 37) % 100) + '%');
+      dot.style.setProperty('--duration', (14 + i % 7) + 's');
+      dot.style.setProperty('--delay', (-i * 2) + 's');
+      particles.append(dot);
+    }
+    region.prepend(particles);
+    if ('IntersectionObserver' in window) new IntersectionObserver(entries => {
+      region.classList.toggle('motion-paused', !entries[0].isIntersecting);
+    }).observe(region);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (region) region.classList.toggle('motion-paused', document.hidden);
+  });
+  reduced.addEventListener('change', () => {
+    if(observer) observer.disconnect();
+    animations.forEach(a => a.cancel());
+    animations.clear();
+    if(!reduced.matches) setup();
+  });
+  setup();
+})();
