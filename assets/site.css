@@ -103,3 +103,12 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3{line-height:1.13;letter-spacing:-.0
 .horizon-sun{animation:sunset-drift linear both;animation-timeline:scroll(root);animation-range:0px 700px}
 @keyframes sunset-drift{from{translate:0 0}to{translate:0 65px}}
 }}
+
+.rules-heading{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.rules-book{flex:none;object-fit:contain;filter:drop-shadow(0 0 22px #ff65bb55);transition:transform .4s,filter .4s}
+.rules-callout{justify-content:flex-start;transition:box-shadow .3s,border-color .3s}
+.rules-callout .text-link{margin-top:20px}
+.policy-card h2{font-size:1.55rem;letter-spacing:-.02em}
+@media(hover:hover) and (pointer:fine){.rules-book:hover,.rules-callout:hover .rules-book{transform:translateY(-7px) rotate(-4deg);filter:drop-shadow(0 0 32px #b58bffaa)}.rules-callout:hover{box-shadow:0 0 40px #ff65bb22;border-color:#ff65bb99}}
+@media(max-width:740px){.rules-heading{flex-direction:column-reverse;align-items:flex-start;gap:26px}.rules-heading .rules-book{width:150px;height:150px}.rules-callout .rules-book{width:120px;height:120px}}
+@media(prefers-reduced-motion:reduce){.rules-book{transform:none!important}}
