@@ -112,3 +112,13 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3{line-height:1.13;letter-spacing:-.0
 @media(hover:hover) and (pointer:fine){.rules-book:hover,.rules-callout:hover .rules-book{transform:translateY(-7px) rotate(-4deg);filter:drop-shadow(0 0 32px #b58bffaa)}.rules-callout:hover{box-shadow:0 0 40px #ff65bb22;border-color:#ff65bb99}}
 @media(max-width:740px){.rules-heading{flex-direction:column-reverse;align-items:flex-start;gap:26px}.rules-heading .rules-book{width:150px;height:150px}.rules-callout .rules-book{width:120px;height:120px}}
 @media(prefers-reduced-motion:reduce){.rules-book{transform:none!important}}
+
+[hidden]{display:none!important}
+.review-form{max-width:760px;margin-top:28px}
+.review-form fieldset{border:1px solid var(--line-strong);border-radius:12px;padding:16px}
+.rating-options{display:flex;gap:18px;flex-wrap:wrap;color:var(--orange)}
+.rating-options label{cursor:pointer;padding:8px}
+.review-form textarea{width:100%;resize:vertical;color:var(--text);background:#110d20;border:1px solid var(--line-strong);border-radius:12px;padding:16px;font:inherit}
+.review-stars{color:#ffc38d!important;letter-spacing:.15em}
+.review-body{white-space:pre-wrap;overflow-wrap:anywhere}
+.review-card .small-print{font-size:.75rem}
