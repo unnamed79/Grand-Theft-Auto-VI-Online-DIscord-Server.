@@ -75,7 +75,7 @@ function showAgreement(manage=false){
  d.querySelector('[data-agreement-submit]').textContent=user?'Save agreement':'Continue with Discord';
  d.querySelector('[data-agreement-manage]').hidden=!user||!manage;
  d.querySelector('[data-agreement-withdraw]').disabled=!agreement?.accepted;
- d.querySelector('[data-agreement-record]').textContent=agreement?.accepted?`Accepted version ${agreement.version} · ${new Date(agreement.accepted_at).toLocaleDateString()}`:`Agreement version ${VERSION}. Your choices will be recorded after successful Discord sign-in.`;
+ d.querySelector('[data-agreement-record]').textContent=agreement?.accepted?`Accepted version ${agreement.version} · ${new Date(agreement.accepted_at).toLocaleDateString()}`:`Agreement version ${VERSION}. ${user?'Choose Save agreement to record your choices.':'Your choices will be recorded after successful Discord sign-in.'}`;
  d.update();d.showModal();
 }
 async function syncAgreement(session,initial=false){

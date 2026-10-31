@@ -142,7 +142,7 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3{line-height:1.13;letter-spacing:-.0
 .agreement-choice{display:flex;align-items:flex-start;gap:12px;line-height:1.55;padding:12px 0;font-size:.92rem}
 .agreement-choice input{flex-shrink:0;accent-color:#ee83c0;width:18px;height:18px;margin-top:3px}
 .agreement-dialog input[type=text],.agreement-dialog input:not([type]){width:100%;background:#110b1c;color:var(--text);border:1px solid var(--line-strong);border-radius:9px;padding:12px;font:inherit}
-.agreement-dialog [data-agreement-error]{color:#ffd09d}.agreement-dialog .utility-row{position:sticky;bottom:-1px;background:#171021;padding:12px 0;margin-bottom:0}
+.agreement-dialog [data-agreement-error]{color:#ffd09d}.agreement-dialog .utility-row{position:static;padding:12px 0;margin-bottom:0}
 .agreement-manage{border-top:1px solid var(--line-strong);margin-top:24px;padding-top:16px}
 .agreement-dialog button:disabled{opacity:.5;cursor:not-allowed}
 .agreement-dialog :focus-visible{outline:3px solid #ffc38d;outline-offset:4px}
