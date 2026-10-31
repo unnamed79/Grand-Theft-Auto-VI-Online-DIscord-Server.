@@ -4,13 +4,13 @@
 <meta name="description" content="Join an independent GTA VI Online Discord community. Find players, chat, follow community updates, and learn about our custom Discord bots.">
 <meta name="theme-color" content="#0c0a14">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: https://cdn.discordapp.com https://media.discordapp.net; font-src 'self'; connect-src 'self' https://pwahlfdudwhqmufxvddn.supabase.co; object-src 'none'; base-uri 'self'; form-action 'none'; upgrade-insecure-requests">
 <link rel="icon" type="image/png" href="./assets/favicon.png"><link rel="stylesheet" href="./assets/site.css">
-</head><body><a class="skip-link" href="#main">Skip to main content</a>
+<script src="./assets/loading.js"></script></head><body><div class="site-loading" role="status"><span class="loading-orbit" aria-hidden="true"></span><span>Loading the community…</span></div><a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header"><div class="shell header-inner">
 <a class="brand" href="./index.html" aria-label="GTA VI Online community home"><img class="brand-logo" src="./assets/logo.png" width="266" height="206" alt="VI Online community logo"><span class="brand-caption">Independent<br>community</span></a>
 <nav class="primary-nav" id="main-navigation" aria-label="Main navigation" data-main-nav><a href="./index.html" aria-current="page">Home</a><a href="./community.html">Community</a><a href="./bots.html">Our bots</a></nav>
-<div class="header-actions"><a class="button button-primary button-small header-join" href="https://discord.gg/NAFJHVsYta" target="_blank" rel="noopener noreferrer">Join Discord <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
+<div class="header-actions"><div class="account-area"><button type="button" class="button button-outline account-signin" data-signin disabled>Connecting…</button><details data-profile hidden><summary aria-label="Your Discord profile"><img data-avatar width="36" height="36" alt="Your Discord avatar" hidden><span class="profile-fallback" aria-hidden="true">●</span></summary><div class="profile-menu"><strong data-profile-name></strong><a href="./reviews.html">My reviews</a><button type="button" class="button button-outline" data-signout>Sign out</button></div></details><span data-auth-message class="auth-message" role="status"></span></div><a class="button button-primary button-small header-join" href="https://discord.gg/NAFJHVsYta" target="_blank" rel="noopener noreferrer">Join Discord <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5h11v11M19 5 5 19"/></svg></a>
 <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="main-navigation" aria-expanded="false" data-menu-toggle><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></header><main id="main">
 <section class="hero"><div class="shell hero-grid"><div class="hero-content"><p class="eyebrow">The community behind the connection</p><h1>More than a game.<br><span class="gradient-type">A place to belong.</span></h1><p class="lead">Meet players, share what matters, and be part of the conversation around GTA Online and what comes next. Our Discord is where it all happens.</p>
@@ -38,4 +38,4 @@
 </div></footer>
 <div class="cookie-banner" role="region" aria-label="Storage notice" data-cookie-banner><h2>Your privacy, kept simple.</h2><p>We do not use advertising or analytics cookies. This site only saves a browser preference to remember that you have seen this notice.</p><div class="cookie-row"><button type="button" class="button button-primary button-small" data-accept-notice>Got it</button><a href="./cookies.html">Read storage policy</a></div></div>
 <div class="toast" data-toast role="status" aria-live="polite" aria-atomic="true"></div>
-<script src="./assets/site.js" defer></script></body></html>
+<script src="./assets/site.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js" defer></script><script src="./assets/auth.js" defer></script></body></html>

@@ -122,3 +122,13 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3{line-height:1.13;letter-spacing:-.0
 .review-stars{color:#ffc38d!important;letter-spacing:.15em}
 .review-body{white-space:pre-wrap;overflow-wrap:anywhere}
 .review-card .small-print{font-size:.75rem}
+
+.account-area{position:relative;flex-shrink:0}.account-area summary{cursor:pointer;list-style:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--pink);display:grid;place-items:center;box-shadow:0 0 18px #ff65bb33}.account-area summary::-webkit-details-marker{display:none}.account-area summary img{border-radius:50%;object-fit:cover}.account-area summary img:not([hidden])+.profile-fallback{display:none}.profile-fallback{color:var(--pink)}
+.profile-menu{position:absolute;right:0;top:55px;width:220px;padding:20px;background:#20182e;border:1px solid var(--line-strong);border-radius:14px;box-shadow:0 12px 35px #0008;display:grid;gap:16px}
+.auth-message:not(:empty){position:absolute;right:0;top:60px;width:240px;background:#21172e;padding:12px;border-radius:10px;font-size:.8rem}
+.signin-highlight{box-shadow:0 0 24px #ff65bb99}
+.review-form{padding:24px 0;border:0;background:none}
+.site-loading{display:none;position:fixed;left:50%;top:110px;transform:translateX(-50%);z-index:120;align-items:center;gap:14px;padding:16px 24px;border:1px solid #ff65bb77;border-radius:40px;background:#1b132bed;box-shadow:0 0 32px #b58bff33;pointer-events:none;font-size:.9rem;white-space:nowrap}
+.page-loading .site-loading{display:flex}.loading-orbit{width:22px;height:22px;border:2px solid #b58bff44;border-top-color:var(--pink);border-radius:50%;animation:loading-spin 1s linear infinite}@keyframes loading-spin{to{transform:rotate(360deg)}}
+@media(max-width:740px){.account-signin{padding:8px 12px;min-height:40px;font-size:.78rem}.header-inner{gap:10px}.site-loading{top:88px}}
+@media(prefers-reduced-motion:reduce){.loading-orbit{animation:none}}

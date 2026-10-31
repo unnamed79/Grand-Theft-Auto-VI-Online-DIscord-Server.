@@ -1,8 +1,8 @@
 (() => {
 'use strict';
 const status=document.querySelector('#review-status'), list=document.querySelector('#reviews-list'), form=document.querySelector('#review-form');
-if(!window.supabase){status.textContent='Login service could not load. Please refresh or try again later.';return;}
-const client=window.supabase.createClient('https://pwahlfdudwhqmufxvddn.supabase.co','sb_publishable_UhKt0XQyQSZOXhJVpsTWKQ_k6SrXH7p',{auth:{flowType:'pkce',persistSession:true,detectSessionInUrl:true}});
+if(!window.communityAuth){status.textContent='Login service could not load. Please refresh or try again later.';return;}
+const client=window.communityAuth.client;
 let user=null,staff=false,editing=null,rows=[],page=0;
 const say=message=>{status.textContent=message;};
 const text=(tag,value,className)=>{const n=document.createElement(tag);n.textContent=value;if(className)n.className=className;return n;};
@@ -30,20 +30,19 @@ async function load(){
  document.querySelector('#page-number').textContent='Page '+(page+1);
 }
 async function auth(){
- const result=await client.auth.getUser();user=result.data.user;
+ await window.communityAuth.ready;const result=await client.auth.getSession();user=result.data.session?.user||null;
  staff=false;
  if(user){const p=await client.rpc('review_permissions');staff=p.data===true;}
- document.querySelector('#login').hidden=!!user;document.querySelector('#logout').hidden=!user;form.hidden=!user;
+ form.hidden=false;
  document.querySelector('#account-status').textContent=user?(staff?'Signed in · Community staff':'Signed in with Discord'):'Sign in with Discord to write a review.';
  await load();
 }
-document.querySelector('#login').onclick=async()=>{say('Opening Discord…');const {error}=await client.auth.signInWithOAuth({provider:'discord',options:{redirectTo:'https://unnamed79.github.io/Grand-Theft-Auto-VI-Online-DIscord-Server./reviews.html'}});if(error)say('Could not start Discord sign-in. Please try again.');};
-document.querySelector('#logout').onclick=async()=>{const {error}=await client.auth.signOut();if(error){say('Could not sign out. Please try again.');return;}reset();await auth();say('Signed out.');};
 document.querySelector('#cancel-edit').onclick=reset;
+form.addEventListener('focusin',async e=>{await window.communityAuth.ready;if(!user&&e.target.matches('textarea,input,button'))window.communityAuth.focusSignIn();});
 document.querySelector('#previous-page').onclick=()=>{page=Math.max(0,page-1);load();};
 document.querySelector('#next-page').onclick=()=>{page++;load();};
 form.onsubmit=async e=>{
- e.preventDefault();if(!user)return;
+ e.preventDefault();if(!user){window.communityAuth.focusSignIn();return;}
  const button=document.querySelector('#submit-review');button.disabled=true;
  try{
  const payload={rating:Number(new FormData(form).get('rating')),body:form.elements.body.value.trim()};

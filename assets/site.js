@@ -95,9 +95,9 @@
         const offset = index % 2 ? 22 : -22;
         if (!entry.target.animate) return;
         const animation = entry.target.animate([
-          { opacity: .3, transform: 'translate3d(' + offset + 'px,24px,0)' },
+          { opacity: .75, transform: 'translate3d(0,5px,0)' },
           { opacity: 1, transform: 'translate3d(0,0,0)' }
-        ], { duration: 650, easing: 'cubic-bezier(.2,.7,.2,1)', delay: (index % 3) * 55 });
+        ], { duration: 420, easing: 'cubic-bezier(.2,.7,.2,1)', delay: 0 });
         animations.add(animation);
         animation.onfinish = () => animations.delete(animation);
       });
