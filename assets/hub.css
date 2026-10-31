@@ -16,3 +16,5 @@
 
 
 @media(max-width:1279px){.site-header{height:auto;min-height:76px}.site-header .header-inner{height:auto;padding-top:10px;padding-bottom:0}.site-header .primary-nav{margin-left:0}.site-header .primary-nav:not(.is-open){align-self:start}html{scroll-padding-top:170px}}
+
+@media(max-width:359px){body{min-width:0}.hub-pagination{gap:10px}.hub-pagination .button{padding:10px 14px}}
