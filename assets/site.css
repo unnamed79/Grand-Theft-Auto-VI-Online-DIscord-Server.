@@ -132,3 +132,18 @@ h1,h2,h3,p{overflow-wrap:break-word}h1,h2,h3{line-height:1.13;letter-spacing:-.0
 .page-loading .site-loading{display:flex}.loading-orbit{width:22px;height:22px;border:2px solid #b58bff44;border-top-color:var(--pink);border-radius:50%;animation:loading-spin 1s linear infinite}@keyframes loading-spin{to{transform:rotate(360deg)}}
 @media(max-width:740px){.account-signin{padding:8px 12px;min-height:40px;font-size:.78rem}.header-inner{gap:10px}.site-loading{top:88px}}
 @media(prefers-reduced-motion:reduce){.loading-orbit{animation:none}}
+
+/* Account agreement: keyboard-accessible native dialog and restrained neon details. */
+.agreement-dialog{color:var(--text);background:linear-gradient(145deg,#23182f,#110d1d);border:1px solid #cb88d899;border-radius:22px;box-shadow:0 0 60px #b58bff22,0 24px 90px #0009;width:min(680px,calc(100% - 28px));max-height:calc(100dvh - 40px);padding:clamp(20px,4vw,36px);overflow-y:auto}
+.agreement-dialog::backdrop{background:#08050fbb;backdrop-filter:blur(5px)}
+.agreement-dialog h2{font-size:clamp(1.7rem,4vw,2.3rem);margin:8px 0 16px;letter-spacing:-.03em}
+.agreement-dialog p{line-height:1.65;color:#d6cddd}.agreement-dialog a{color:#ffc4e5;text-decoration:underline;text-underline-offset:3px}
+.agreement-dialog fieldset{border:1px solid var(--line-strong);border-radius:12px;margin:22px 0;padding:14px}
+.agreement-choice{display:flex;align-items:flex-start;gap:12px;line-height:1.55;padding:12px 0;font-size:.92rem}
+.agreement-choice input{flex-shrink:0;accent-color:#ee83c0;width:18px;height:18px;margin-top:3px}
+.agreement-dialog input[type=text],.agreement-dialog input:not([type]){width:100%;background:#110b1c;color:var(--text);border:1px solid var(--line-strong);border-radius:9px;padding:12px;font:inherit}
+.agreement-dialog [data-agreement-error]{color:#ffd09d}.agreement-dialog .utility-row{position:sticky;bottom:-1px;background:#171021;padding:12px 0;margin-bottom:0}
+.agreement-manage{border-top:1px solid var(--line-strong);margin-top:24px;padding-top:16px}
+.agreement-dialog button:disabled{opacity:.5;cursor:not-allowed}
+.agreement-dialog :focus-visible{outline:3px solid #ffc38d;outline-offset:4px}
+@media(prefers-reduced-motion:no-preference){.agreement-dialog[open]{animation:agreement-appear .18s ease-out}@keyframes agreement-appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}}

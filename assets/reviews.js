@@ -42,14 +42,14 @@ form.addEventListener('focusin',async e=>{await window.communityAuth.ready;if(!u
 document.querySelector('#previous-page').onclick=()=>{page=Math.max(0,page-1);load();};
 document.querySelector('#next-page').onclick=()=>{page++;load();};
 form.onsubmit=async e=>{
- e.preventDefault();if(!user){window.communityAuth.focusSignIn();return;}
+ e.preventDefault();if(!user){window.communityAuth.focusSignIn();return;}if(!await window.communityAuth.ensureAgreement())return;
  const button=document.querySelector('#submit-review');button.disabled=true;
  try{
  const payload={rating:Number(new FormData(form).get('rating')),body:form.elements.body.value.trim()};
  let result;
  if(editing)result=await client.from('website_reviews').update(payload).eq('id',editing).select('id');
  else result=await client.from('website_reviews').insert(payload).select('id');
- if(result.error){say(result.error.code==='23505'?'You already have a review. Find it below and choose Edit.':result.error.message.includes('30 seconds')?'Please wait 30 seconds between submissions or edits.':'Could not save your review. Check your sign-in and try again.');return;}
+ if(result.error){say(result.error.code==='42501'?'Please review your account agreement or contact the operator about guardian approval.':result.error.code==='23505'?'You already have a review. Find it below and choose Edit.':result.error.message.includes('30 seconds')?'Please wait 30 seconds between submissions or edits.':'Could not save your review. Check your sign-in and try again.');return;}
  if(!result.data.length){say('Review was not saved. Your access may have changed.');return;}
  reset();page=0;say('Your review is published.');await load();
  }catch{say('Connection interrupted. Please try again.');}finally{button.disabled=false;}
