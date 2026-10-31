@@ -24,3 +24,8 @@ Version 2026-10-31.2 adds posts, comments, attachments and votes. Archive copies
 
 ## Validation
 Transactional tests in community-hub-tests.sql create synthetic identities and roll back all test data. They cover agreement gating, private drafts, ownership, vote replacement, same-post replies, withdrawal, upload reservations and delete cascades. Check browser behavior and storage upload/download after deployment. No formal WCAG conformance audit has been performed.
+
+## Media and navigation refinement
+Optional tags: PvP, Mission, Vehicles, Community project. HTTPS links require a label and external-site notice. Avatar URLs are read from Discord identities and restricted to Discord CDN hosts. Site-wide search is local page navigation only. Community search supports latest activity (post edits/comment activity), newest, total interactions, upvote count and downvote count. MP4/WebM videos up to 25 MiB; other files remain 8 MiB. Twelve attachment slots limit each account's maximum stored bytes to 300 MiB. No autoplay. Spoilers are a presentation feature, not access control. An existing vote may be removed immediately. OAuth returns through the configured Site URL and uses an allowlisted same-site return page, expiring after twenty minutes.
+
+Agreement release 2026-10-31.3 explicitly covers public Discord avatars, video uploads and optional links. Earlier policy snapshots remain unchanged. Existing members and guardians must renew for this release.
