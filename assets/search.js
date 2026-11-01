@@ -5,7 +5,7 @@ const box=document.createElement('form');box.className='site-search';box.setAttr
 const input=document.createElement('input');input.type='search';input.placeholder='Find a website page…';input.maxLength=100;input.setAttribute('aria-label','Find a website page');input.setAttribute('aria-controls','site-search-results');input.setAttribute('aria-expanded','false');input.autocomplete='off';
 const panel=document.createElement('div');panel.id='site-search-results';panel.className='site-search-panel';panel.hidden=true;panel.setAttribute('aria-label','Website page results');
 box.append(input,panel);header.insertBefore(box,header.querySelector('.primary-nav'));
-const pages=[['Credits','credits.html','unnamed owner creator acknowledgements'],['Home','index.html','welcome'],['Community hub','community.html','posts comments creations crew maps mods'],['Website reviews','reviews.html','ratings stars'],['Our bots','bots.html','modmail'],['Community rules','rules.html','guidelines'],['Terms of Service','terms.html','legal'],['Privacy Policy','privacy.html','data deletion'],['Cookie & storage policy','cookies.html','sessions'],['Guardian approval','guardian.html','parents age'],['Accessibility','accessibility.html','keyboard disability'],['ModMail Terms','modmail-terms.html','bot'],['ModMail Privacy','modmail-privacy.html','bot']];
+const pages=[['Staff applications','applications.html','moderator recruitment apply staff'],['Credits','credits.html','unnamed owner creator acknowledgements'],['Home','index.html','welcome'],['Community hub','community.html','posts comments creations crew maps mods'],['Website reviews','reviews.html','ratings stars'],['Our bots','bots.html','modmail'],['Community rules','rules.html','guidelines'],['Terms of Service','terms.html','legal'],['Privacy Policy','privacy.html','data deletion'],['Cookie & storage policy','cookies.html','sessions'],['Guardian approval','guardian.html','parents age'],['Accessibility','accessibility.html','keyboard disability'],['ModMail Terms','modmail-terms.html','bot'],['ModMail Privacy','modmail-privacy.html','bot']];
 const hide=()=>{panel.hidden=true;input.setAttribute('aria-expanded','false');};
 function search(){const q=input.value.trim().toLowerCase();panel.replaceChildren();if(!q){hide();return;}panel.hidden=false;input.setAttribute('aria-expanded','true');for(const page of pages.filter(p=>(p[0]+' '+p[2]).toLowerCase().includes(q))){const a=document.createElement('a');a.textContent=page[0];a.href='./'+page[1];panel.append(a);}if(!panel.children.length){const p=document.createElement('p');p.textContent='No matching pages. Search community posts in the Community hub.';panel.append(p);}}
 input.oninput=search;input.onfocus=search;box.onsubmit=e=>{e.preventDefault();panel.querySelector('a')?.click();};box.addEventListener('keydown',e=>{if(e.key==='Escape'){hide();input.focus();}if(e.key==='ArrowDown'&&e.target===input){e.preventDefault();panel.querySelector('a')?.focus();}});document.addEventListener('click',e=>{if(!box.contains(e.target))hide();});box.addEventListener('focusout',e=>{if(!box.contains(e.relatedTarget))hide();});
@@ -14,24 +14,5 @@ let exitDialog,returnFocus;
 function showExit(link){let url;try{url=new URL(link.href);}catch{return;}if(url.protocol!=='https:'||url.username||url.password)return;if(url.origin===location.origin){location.href=url.href;return;}if(!exitDialog){exitDialog=document.createElement('dialog');exitDialog.className='hub-dialog exit-dialog';exitDialog.setAttribute('aria-labelledby','exit-title');const title=document.createElement('h2');title.id='exit-title';title.textContent='You’re leaving our community website.';const message=document.createElement('p');message.textContent='Thank you for visiting the GTA VI Online Community website. You are about to open an external website. A link does not constitute our endorsement of its services, products or content. The destination has its own privacy and security practices.';const destination=document.createElement('p');destination.id='exit-destination';destination.className='exit-destination';const actions=document.createElement('div');actions.className='utility-row';const stay=document.createElement('button');stay.type='button';stay.className='button button-outline';stay.textContent='Stay here';stay.onclick=()=>exitDialog.close();const go=document.createElement('a');go.id='exit-continue';go.className='button button-primary';go.textContent='Continue to external site ↗';go.target='_blank';go.rel='noopener noreferrer';go.referrerPolicy='no-referrer';go.onclick=()=>exitDialog.close();actions.append(stay,go);exitDialog.append(title,message,destination,actions);exitDialog.addEventListener('close',()=>returnFocus?.focus());document.body.append(exitDialog);}returnFocus=link;exitDialog.querySelector('#exit-destination').textContent=url.href;exitDialog.querySelector('#exit-continue').href=url.href;exitDialog.showModal();exitDialog.querySelector('button').focus();}
 document.addEventListener('click',e=>{const link=e.target.closest('a[data-external]');if(link){e.preventDefault();showExit(link);}});document.addEventListener('auxclick',e=>{const link=e.target.closest('a[data-external]');if(link&&e.button===1){e.preventDefault();showExit(link);}});
 
-async function recruitmentLink(){
- const auth=window.communityAuth;if(!auth)return;
- try{
-  await auth.ready;const r=await auth.client.rpc('recruitment',{action:'status'});if(r.error)return;
-  const old=pages.findIndex(p=>p[1]==='applications.html');if(old>=0)pages.splice(old,1);
-  document.querySelectorAll('[data-recruitment-link]').forEach(a=>a.remove());
-  if(r.data.accepting||r.data.staff){
-   pages.push(['Staff applications','applications.html','moderator recruitment apply staff']);
-   const a=document.createElement('a');a.href='./applications.html';a.dataset.recruitmentLink='';a.textContent=r.data.staff?'Staff applications · Manage':'Apply to be staff';
-   const target=r.data.staff?document.querySelector('.profile-menu'):document.querySelector('.primary-nav');
-   target?.append(a);
-   if(location.pathname.endsWith('/community.html')){
-    const c=a.cloneNode(true);c.className='button button-outline';document.querySelector('.page-intro .utility-row')?.append(c);
-   }
-  }
- }catch{}
-}
-recruitmentLink();
-window.addEventListener('community-agreement-change',recruitmentLink);
 
 })();

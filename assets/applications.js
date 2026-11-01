@@ -2,14 +2,19 @@
 'use strict';
 const $=id=>document.getElementById(id),form=$('staff-application-form'),dialog=$('application-options');
 const langs={"coding":["Python","JavaScript","Java","C++","C","Rust"],"markup":["Markdown","HTML","XML","SVG","LaTeX"]},durations=["1–3 months","3–6 months","6 months–1 year","2 years","2.5 years","3 years","3.5 years","4+ years"],questions=[["username","What is your Discord username?",true,false],["age","How old are you?",true,false],["timezone","What timezone do you live in?",true,false],["availability","Which hours of the day can you moderate? Use your timezone.",true,false],["motivation","Why do you want to become a moderator in this server specifically?",true,true],["rules","What would you do if someone violated the rules, such as speaking in a different language or posting NSFW content?",true,true],["skills","Which skills could benefit our moderation team? Why should we choose you specifically?",true,true],["experience","Do you have prior Discord staff experience? Which servers have you moderated, or do you still moderate, and for how long?",true,true],["other_code","Other coding languages and how long you have used them",false,false],["other_markup","Other markup languages and how long you have used them",false,false],["ielts","Have you taken the IELTS exam? If so, what was your score?",false,false]];
-let auth,state,session,offset=0,loading=false,identityGeneration=0;
+let auth,state,session,offset=0,loading=false,identityGeneration=0,refreshId=0,closedNotified=false;
+const questionNodes=Array.from(form.childNodes),submitButton=$('submit-application');
+function hideForm(){form.hidden=true;form.inert=true;questionNodes.forEach(node=>node.remove());}
+function showForm(){form.append(...questionNodes);form.inert=false;form.hidden=false;}
+function unavailable(){hideForm();$('application-entry').hidden=true;say('application-status','Unable to confirm recruitment availability. Please try again shortly.');}
+function closedNotice(){if(closedNotified)return;closedNotified=true;window.dispatchEvent(new Event('recruitment-notice'));}
 const say=(id,text)=>{$(id).textContent=text;};
 async function rpc(action,payload={}){const r=await auth.client.rpc('recruitment',{action,payload});if(r.error)throw new Error(r.error.message);return r.data;}
-function clearPrivate(){form.reset();form.hidden=true;$('application-responses').hidden=true;$('response-list').replaceChildren();$('application-staff').hidden=true;$('application-receipt').hidden=true;if(dialog.open)dialog.close();}
+function clearPrivate(){form.append(...questionNodes);form.reset();hideForm();$('application-responses').hidden=true;$('response-list').replaceChildren();$('application-staff').hidden=true;$('application-receipt').hidden=true;if(dialog.open)dialog.close();}
 async function refresh(){
- const generation=identityGeneration;
- const who=await auth.client.auth.getSession();const next=await rpc('status');
- if(generation!==identityGeneration)return;
+ const generation=identityGeneration,request=++refreshId;
+ const who=await auth.client.auth.getSession();const next=await rpc('status').catch(error=>{unavailable();throw error;});
+ if(generation!==identityGeneration||request!==refreshId)return;
  session=who.data.session;state=next;
  $('application-staff').hidden=!state.staff;
  $('application-closed').hidden=state.accepting;
@@ -17,7 +22,9 @@ async function refresh(){
  $('application-entry').hidden=!state.accepting||!!state.own;
  $('application-receipt').hidden=!state.own;
  if(state.own)say('receipt-text','Submitted '+new Date(state.own.submitted_at).toLocaleString()+'. Automatically expires '+new Date(state.own.expires_at).toLocaleString()+'. Only authorized website staff can read it.');
- if(!state.accepting||state.own||!session)form.hidden=true;
+ if(!state.accepting||state.own||!session)hideForm();
+ if(!state.accepting&&!state.staff)closedNotice();else closedNotified=false;
+ window.dispatchEvent(new Event('recruitment-refresh'));
  say('application-status',state.accepting?'Recruitment is open · Round '+state.round:'Recruitment is closed');
  say('application-eligibility',!session?'Sign in with Discord to continue.':state.needs_guardian&&!state.guardian_approved?'Ask your guardian to arrange recruitment-specific approval with the operator before filling in answers.':'Your application is private. Review the recruitment notice before continuing.');
  $('application-start').textContent=session?'Continue to application':'Sign in to apply';
@@ -27,23 +34,23 @@ $('application-start').onclick=async()=>{
   if(!session){auth.focusSignIn();return;}
   if(!await auth.ensureAgreement())return;
   await refresh();
-  if(!state.accepting||state.own)return;
+  if(!state.accepting||state.own||!session)return;
   const route=$('application-age-route').value;
   if(!route){say('application-eligibility','Choose your age / consent route first.');$('application-age-route').focus();return;}
   if((route==='guardian'||state.needs_guardian)&&!state.guardian_approved){say('application-eligibility','A verified guardian must approve recruitment processing before you provide answers. Contact the operator through the support server linked in the notice.');$('recruitment-notice').open=true;return;}
-  form.hidden=false;$('application-username').focus();
+  showForm();$('application-username').focus();
  }catch(e){say('application-status',e.message);}
 };
 form.addEventListener('change',e=>{
  if(e.target.name==='age'&&Number(e.target.value)<18&&!state?.guardian_approved){
-  form.reset();form.hidden=true;$('application-age-route').value='guardian';
+  form.reset();hideForm();$('application-age-route').value='guardian';
   say('application-eligibility','Applicants aged 16–17 need verified guardian recruitment approval first. Applicants under 16 cannot apply.');
   $('application-age-route').focus();
  }
 });
 document.querySelectorAll('[data-clear-grid]').forEach(b=>b.onclick=()=>form.querySelectorAll('input[name^="'+b.dataset.clearGrid+'_"]').forEach(i=>i.checked=false));
 form.onsubmit=async e=>{
- e.preventDefault();if(loading||!form.reportValidity())return;loading=true;$('submit-application').disabled=true;
+ e.preventDefault();if(loading||!form.reportValidity())return;loading=true;submitButton.disabled=true;
  try{
   if(!await auth.ensureAgreement())return;
   const f=new FormData(form),answers={};
@@ -52,8 +59,8 @@ form.onsubmit=async e=>{
   for(const kind of Object.keys(langs)){answers[kind]={};langs[kind].forEach((language,index)=>{const v=f.get(kind+'_'+index);if(v!==null)answers[kind][language]=Number(v);});}
   await rpc('submit',{answers,round:state.round,consent:f.has('application_consent'),notice_version:'recruitment-2026-11-01'});
   form.reset();form.hidden=true;await refresh();$('application-receipt').scrollIntoView({block:'center',behavior:'smooth'});
- }catch(e){say('application-submit-status',e.message);}
- finally{loading=false;$('submit-application').disabled=false;}
+ }catch(e){say('application-submit-status',e.message);await refresh().catch(unavailable);}
+ finally{loading=false;submitButton.disabled=false;}
 };
 $('withdraw-application').onclick=async()=>{
  if(!state?.own||!confirm('Delete your submitted application? Staff will no longer be able to review it.'))return;
@@ -104,7 +111,11 @@ async function init(){
  auth=window.communityAuth;if(!auth)throw new Error('Account service could not load. Please refresh to retry.');
  await auth.ready;await refresh();
  auth.client.auth.onAuthStateChange((event)=>{if(event==='SIGNED_IN'||event==='SIGNED_OUT'){identityGeneration++;clearPrivate();}if(event==='SIGNED_IN'||event==='SIGNED_OUT')setTimeout(()=>refresh().catch(e=>say('application-status',e.message)),0);});
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh().catch(()=>{});});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)hideForm();else refresh().catch(unavailable);});
+ window.addEventListener('focus',()=>refresh().catch(unavailable));
+ setInterval(()=>{if(!document.hidden)refresh().catch(unavailable);},30000);
 }
-init().catch(e=>say('application-status',e.message));
+hideForm();
+window.addEventListener('recruitment-status',e=>{if(!e.detail){unavailable();return;}if(!e.detail.accepting){hideForm();$('application-entry').hidden=true;$('application-closed').hidden=false;say('closed-message',e.detail.closed_message);if(!e.detail.staff)closedNotice();}});
+init().catch(unavailable);
 })();
