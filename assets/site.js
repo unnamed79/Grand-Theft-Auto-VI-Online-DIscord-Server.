@@ -89,10 +89,12 @@
  document.addEventListener('pointerdown',()=>root.classList.remove('keyboard-navigation'),true);
  const region=document.querySelector('.hero,.page-intro');if(!region)return;
  const particles=document.createElement('div');particles.className='motion-particles';particles.setAttribute('aria-hidden','true');
- for(let i=0;i<10;i++){
+ for(let i=0;i<(matchMedia('(max-width:740px)').matches?16:28);i++){
   const dot=document.createElement('i');
+  dot.style.setProperty('--size',(2+i%3)+'px');
+  dot.style.setProperty('--spark',i%3===0?'#ffc38d':i%3===1?'#ff8dc0':'#b9a0ff');
   dot.style.setProperty('--x',((i*37)%100)+'%');
-  dot.style.setProperty('--duration',(24+i%7)+'s');
+  dot.style.setProperty('--duration',(18+i%9)+'s');
   dot.style.setProperty('--delay',(-i*3)+'s');particles.append(dot);
  }
  region.prepend(particles);
