@@ -13,5 +13,25 @@ const top=document.createElement('button');top.type='button';top.className='scro
 let exitDialog,returnFocus;
 function showExit(link){let url;try{url=new URL(link.href);}catch{return;}if(url.protocol!=='https:'||url.username||url.password)return;if(url.origin===location.origin){location.href=url.href;return;}if(!exitDialog){exitDialog=document.createElement('dialog');exitDialog.className='hub-dialog exit-dialog';exitDialog.setAttribute('aria-labelledby','exit-title');const title=document.createElement('h2');title.id='exit-title';title.textContent='You’re leaving our community website.';const message=document.createElement('p');message.textContent='Thank you for visiting the GTA VI Online Community website. You are about to open an external website. A link does not constitute our endorsement of its services, products or content. The destination has its own privacy and security practices.';const destination=document.createElement('p');destination.id='exit-destination';destination.className='exit-destination';const actions=document.createElement('div');actions.className='utility-row';const stay=document.createElement('button');stay.type='button';stay.className='button button-outline';stay.textContent='Stay here';stay.onclick=()=>exitDialog.close();const go=document.createElement('a');go.id='exit-continue';go.className='button button-primary';go.textContent='Continue to external site ↗';go.target='_blank';go.rel='noopener noreferrer';go.referrerPolicy='no-referrer';go.onclick=()=>exitDialog.close();actions.append(stay,go);exitDialog.append(title,message,destination,actions);exitDialog.addEventListener('close',()=>returnFocus?.focus());document.body.append(exitDialog);}returnFocus=link;exitDialog.querySelector('#exit-destination').textContent=url.href;exitDialog.querySelector('#exit-continue').href=url.href;exitDialog.showModal();exitDialog.querySelector('button').focus();}
 document.addEventListener('click',e=>{const link=e.target.closest('a[data-external]');if(link){e.preventDefault();showExit(link);}});document.addEventListener('auxclick',e=>{const link=e.target.closest('a[data-external]');if(link&&e.button===1){e.preventDefault();showExit(link);}});
-})();
 
+async function recruitmentLink(){
+ const auth=window.communityAuth;if(!auth)return;
+ try{
+  await auth.ready;const r=await auth.client.rpc('recruitment',{action:'status'});if(r.error)return;
+  const old=pages.findIndex(p=>p[1]==='applications.html');if(old>=0)pages.splice(old,1);
+  document.querySelectorAll('[data-recruitment-link]').forEach(a=>a.remove());
+  if(r.data.accepting||r.data.staff){
+   pages.push(['Staff applications','applications.html','moderator recruitment apply staff']);
+   const a=document.createElement('a');a.href='./applications.html';a.dataset.recruitmentLink='';a.textContent=r.data.staff?'Staff applications · Manage':'Apply to be staff';
+   const target=r.data.staff?document.querySelector('.profile-menu'):document.querySelector('.primary-nav');
+   target?.append(a);
+   if(location.pathname.endsWith('/community.html')){
+    const c=a.cloneNode(true);c.className='button button-outline';document.querySelector('.page-intro .utility-row')?.append(c);
+   }
+  }
+ }catch{}
+}
+recruitmentLink();
+window.addEventListener('community-agreement-change',recruitmentLink);
+
+})();

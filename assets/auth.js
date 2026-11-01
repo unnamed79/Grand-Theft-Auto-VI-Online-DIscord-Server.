@@ -53,7 +53,7 @@ function buildDialog(){
     }
     if(!save(PENDING,{payload,at:Date.now()}))throw new Error('Your browser must allow temporary session storage to complete sign-in.');
     const page=location.pathname.split('/').pop()||'index.html';
-    const allowed=['index.html','community.html','bots.html','reviews.html','rules.html','terms.html','privacy.html','cookies.html','guardian.html','accessibility.html','modmail-terms.html','modmail-privacy.html'];
+    const allowed=['index.html','community.html','bots.html','reviews.html','rules.html','terms.html','privacy.html','cookies.html','guardian.html','accessibility.html','modmail-terms.html','modmail-privacy.html','applications.html'];
     save(RETURN,{page:allowed.includes(page)?page:'index.html',at:Date.now()});
     const result=await client.auth.signInWithOAuth({provider:'discord',options:{redirectTo:'https://unnamed79.github.io/Grand-Theft-Auto-VI-Online-DIscord-Server./'}});
     if(result.error){remove(PENDING);throw new Error('Discord sign-in could not start. Please try again.');}
@@ -101,7 +101,7 @@ async function syncAgreement(session,initial=false){
  if(pendingError)note(pendingError);
  if(!agreement.accepted&&!agreement.withdrawn&&read(DISMISSED)!==actor&&location.pathname.endsWith('/reviews.html'))showAgreement();
 }
-const ready=client.auth.getSession().then(async({data,error})=>{if(error)throw error;await syncAgreement(data.session,true);if(oauthReturn&&data.session){const target=read(RETURN);remove(RETURN);const pages=['index.html','community.html','bots.html','reviews.html','rules.html','terms.html','privacy.html','cookies.html','guardian.html','accessibility.html','modmail-terms.html','modmail-privacy.html'];if(target&&Date.now()-target.at>=0&&Date.now()-target.at<20*60*1000&&pages.includes(target.page)&&!['index.html',''].includes(target.page)){location.replace('https://unnamed79.github.io/Grand-Theft-Auto-VI-Online-DIscord-Server./'+target.page);}}return data.session;});
+const ready=client.auth.getSession().then(async({data,error})=>{if(error)throw error;await syncAgreement(data.session,true);if(oauthReturn&&data.session){const target=read(RETURN);remove(RETURN);const pages=['index.html','community.html','bots.html','reviews.html','rules.html','terms.html','privacy.html','cookies.html','guardian.html','accessibility.html','modmail-terms.html','modmail-privacy.html','applications.html'];if(target&&Date.now()-target.at>=0&&Date.now()-target.at<20*60*1000&&pages.includes(target.page)&&!['index.html',''].includes(target.page)){location.replace('https://unnamed79.github.io/Grand-Theft-Auto-VI-Online-DIscord-Server./'+target.page);}}return data.session;});
 window.communityAuth={client,ready,ensureAgreement:async()=>{
  await ready;if(!user){window.communityAuth.focusSignIn();return false;}
  const result=await client.rpc('agreement_status');agreement=result.error?null:result.data;
