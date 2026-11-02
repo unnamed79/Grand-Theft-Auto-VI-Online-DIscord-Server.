@@ -21,3 +21,5 @@
  @keyframes recruitment-backdrop-out{to{opacity:0}}
 }
 
+
+@media(max-width:740px){.primary-nav.is-open{gap:4px;max-height:calc(100dvh - 130px);overflow-y:auto}.primary-nav [data-recruitment-link]{display:block;position:relative;flex:0 0 auto;margin:8px 0 0;padding:13px 12px!important;min-height:44px;white-space:normal;line-height:1.5;box-sizing:border-box}}

@@ -1,0 +1,1 @@
+(()=>{'use strict';const buttons=[...document.querySelectorAll('[data-tool-category]')];buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(b=>{const active=b===button;b.setAttribute('aria-expanded',String(active));document.getElementById(b.getAttribute('aria-controls')).hidden=!active;});}));})();
