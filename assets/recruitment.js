@@ -28,7 +28,7 @@
   document.querySelectorAll('[data-recruitment-link]').forEach(link=>{
    const staff=link.dataset.recruitmentManage!==undefined;
    link.dataset.recruitmentState=state?(state.accepting?'open':'closed'):'unknown';
-   link.textContent=staff?'Staff applications · Manage':state?(state.accepting?'Apply to be staff · Open':'Staff applications · Closed'):'Staff applications · Checking';
+   link.textContent=staff?'Staff application · Manage':state?(state.accepting?'Staff application · Open':'Staff application · Closed'):'Staff application · Checking';
   });
   let manage=document.querySelector('[data-recruitment-manage]');
   if(state?.staff&&!manage){manage=document.createElement('a');manage.href='./applications.html';manage.dataset.recruitmentLink='';manage.dataset.recruitmentManage='';const menu=document.querySelector('.profile-menu');if(menu){menu.append(manage);paint();}}
