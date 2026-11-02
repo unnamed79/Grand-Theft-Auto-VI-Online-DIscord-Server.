@@ -26,12 +26,12 @@
 .cinema-copy h1,.cinema-copy h2{background:linear-gradient(115deg,#ffc59b 8%,#ff91d0 52%,#bda1ff 95%);background-clip:text;-webkit-background-clip:text;color:transparent;max-width:18ch}
 .cinema-copy p{margin:20px 0}
 .cinema-copy .coming-soon{font-size:.85rem;color:#efbbd9;max-width:48ch}
-.cinema-art{pointer-events:auto;animation:cinema-float 6s ease-in-out infinite}
-.cinema-art>img:last-child{transition:filter .45s cubic-bezier(.16,1,.3,1)}
-.cinema-art.is-hovered>img:last-child{filter:drop-shadow(0 0 7px #ff65bb) drop-shadow(0 0 22px #ae72ff)}
-@keyframes cinema-float{0%,100%{translate:0 calc(-50% + 7px)}50%{translate:0 calc(-50% - 7px)}}
+.cinema-art{pointer-events:auto}.cinema-float{position:relative;animation:cinema-float 6s ease-in-out infinite}
+.cinema-float>img:last-child{transition:filter .45s cubic-bezier(.16,1,.3,1)}
+.cinema-art.is-hovered .cinema-float>img:last-child{filter:drop-shadow(0 0 7px #ff65bb) drop-shadow(0 0 22px #ae72ff)}
+@keyframes cinema-float{0%,100%{transform:translateY(7px)}50%{transform:translateY(-7px)}}
 .cinema-motes i{width:4px;height:4px;animation:none;opacity:.8;box-shadow:0 0 9px currentColor}
-.cinema.is-paused .cinema-art{animation-play-state:paused}
+.cinema.is-paused .cinema-float{animation-play-state:paused}
 .home-atmosphere main>.section-tight{position:relative;z-index:1;background:#0d0b18;padding-block:48px}
 .home-atmosphere .platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .home-atmosphere .platform-card{border:1px solid #b58bff40;border-radius:16px;background:linear-gradient(135deg,#211730,#15182b);padding:28px;min-width:0}
@@ -46,10 +46,12 @@
 .home-atmosphere .platform-grid{grid-template-columns:1fr}
 .home-atmosphere .platform-card{padding:24px}
 }
-@media(prefers-reduced-motion:reduce){.cinema-art{animation:none}.cinema-art>img:last-child{transition:none}.cinema-chapter{min-height:0}.cinema-motes i{opacity:.5}}
+@media(prefers-reduced-motion:reduce){.cinema-art{animation:none}.cinema-float>img:last-child{transition:none}.cinema-chapter{min-height:0}.cinema-motes i{opacity:.5}}
 @media(forced-colors:active){.cinema-copy h1,.cinema-copy h2{background:none;color:CanvasText}}
 
 .home-atmosphere main>.section-tight h2{background:linear-gradient(115deg,#ffc59b,#ff91d0,#bda1ff);background-clip:text;-webkit-background-clip:text;color:transparent}
 .cinema-motes i{left:0;top:0}
 @media(max-width:740px){.cinema-motes i:nth-child(n+31){display:none}}
 @media(forced-colors:active){.home-atmosphere main>.section-tight h2{background:none;color:CanvasText}}
+
+@media(max-width:740px),(prefers-reduced-motion:reduce){.cinema-float{animation:none}}
