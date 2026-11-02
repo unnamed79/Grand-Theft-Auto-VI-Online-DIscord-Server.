@@ -22,3 +22,8 @@
 @media(hover:none),(pointer:coarse){.scroll-to-top:hover{transform:none}}
 html.keyboard-navigation .scroll-to-top:hover{transform:none}
 @media(prefers-reduced-motion:reduce){.scroll-to-top:hover{transform:none}}
+
+/* Reversible entrance and exit without display:none interrupting the fade. */
+.scroll-to-top{opacity:0;visibility:hidden;pointer-events:none;translate:0 10px;transition:opacity 180ms ease,translate 220ms cubic-bezier(.16,1,.3,1),visibility 0s linear 220ms,box-shadow 200ms ease,transform 200ms ease}
+.scroll-to-top.is-visible{opacity:1;visibility:visible;pointer-events:auto;translate:0 0;transition-delay:0s}
+@media(prefers-reduced-motion:reduce){.scroll-to-top{translate:none;transition:none}}
