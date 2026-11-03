@@ -14,7 +14,7 @@ const client=window.supabase.createClient('https://pwahlfdudwhqmufxvddn.supabase
 let user=null,agreement=null,syncId=0,working=false,dialog;
 const notify=()=>window.dispatchEvent(new Event('community-agreement-change'));
 function paint(session){
- user=session?.user||null;button.hidden=!!user;profile.hidden=!user;button.disabled=false;button.textContent='Sign in options';
+ user=session?.user||null;button.hidden=!!user;profile.hidden=!user;button.disabled=false;button.textContent='Sign in';
  if(user){const meta=user.user_metadata||{};name.textContent=meta.full_name||meta.name||'Discord member';let url;try{url=new URL(meta.avatar_url||meta.picture||'');}catch{}
  avatar.hidden=true;if(url&&url.protocol==='https:'&&['cdn.discordapp.com','media.discordapp.net'].includes(url.hostname)){avatar.src=url.href;avatar.hidden=false;}avatar.onerror=()=>{avatar.hidden=true;};}
 }
@@ -109,10 +109,10 @@ window.communityAuth={client,ready,ensureAgreement:async()=>{
  if(!agreement?.accepted){showAgreement();return false;}return true;
 }};
 client.auth.onAuthStateChange((event,session)=>{paint(session);if(event==='SIGNED_OUT'){agreement=null;remove(PENDING);remove(DISMISSED);if(dialog?.open)dialog.close();notify();}else if(event==='SIGNED_IN'){setTimeout(()=>ready.then(()=>syncAgreement(session)).catch(()=>{}),0);}});
-button.onclick=()=>window.communityDemo.openOptions(()=>showAgreement());
+button.onclick=()=>showAgreement();
 const manage=document.createElement('button');manage.type='button';manage.className='button button-outline';manage.textContent='Account & privacy';manage.onclick=async()=>{profile.open=false;const result=await client.rpc('agreement_status');agreement=result.error?null:result.data;showAgreement(true);};profile.querySelector('.profile-menu').append(manage);
 document.querySelector('[data-signout]').onclick=async()=>{const {error}=await client.auth.signOut();note(error?'Could not sign out. Please try again.':'Signed out.');if(!error)profile.open=false;};
 window.communityAuth.focusSignIn=()=>{window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});button.focus({preventScroll:true});button.classList.add('signin-highlight');setTimeout(()=>button.classList.remove('signin-highlight'),2000);note('Sign in here to participate in the community.');};
-ready.catch(()=>{button.disabled=false;button.textContent='Sign in options';note('Account service is taking longer than expected. Please refresh to retry.');});
+ready.catch(()=>{button.disabled=false;button.textContent='Sign in';note('Account service is taking longer than expected. Please refresh to retry.');});
 })();
 
