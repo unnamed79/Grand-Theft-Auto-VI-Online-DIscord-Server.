@@ -1,0 +1,12 @@
+/* Homepage Patreon: preserve the established asymmetric feature grid. */
+.patreon-tier-heading{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.patreon-tier-heading img{width:88px;height:88px;object-fit:contain;flex-shrink:0}
+.home-atmosphere .patreon-tier-heading h3{margin:0}
+.patreon-tier ul{margin:0;padding-left:1.25em;color:var(--muted);font-size:.94rem;line-height:1.65}
+.patreon-tier li+li{margin-top:8px}
+.patreon-tier li::marker{color:var(--orange)}
+.patreon-tier strong{color:var(--text);font-weight:650}
+.patreon-link{margin-top:28px}
+.home-atmosphere .patreon-intro .patreon-note{margin-top:18px;font-size:.8rem;color:var(--muted)}
+.patreon-coming{font-size:.85rem;color:var(--muted);margin:18px 0 0}
+@media(max-width:420px){.patreon-tier-heading{gap:16px}.patreon-tier-heading img{width:72px;height:72px}}
