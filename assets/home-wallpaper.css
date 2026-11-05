@@ -1,0 +1,4 @@
+/* Wallpaper is confined to the content below the hero and above the footer. */
+.home-wallpaper{position:relative;isolation:isolate;background:#100d19}
+.home-wallpaper::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(12,10,20,.65),rgba(12,10,20,.73)),url('./gta6-airport.jpg') center center/cover no-repeat}
+@media(min-width:1000px) and (prefers-reduced-motion:no-preference){.home-wallpaper::before{background-attachment:scroll,fixed}}
