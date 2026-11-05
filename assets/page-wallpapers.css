@@ -1,0 +1,7 @@
+/* Decorative wallpapers end before the footer and keep the original intro intact. */
+.page-wallpaper{position:relative;isolation:isolate;background:#100d19}
+.page-wallpaper::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(180deg,#0c0a14b3,#0c0a14c4),var(--page-scene);background-position:center;background-size:cover;background-repeat:no-repeat}
+.tools-wallpaper{--page-scene:url('./gta6_city3.jpg')}
+.application-wallpaper{--page-scene:url('./gta6_sunet.jpg')}
+.rules-wallpaper{--page-scene:url('./gta6_city_water.jpg')}
+@media(min-width:1000px) and (prefers-reduced-motion:no-preference){.page-wallpaper::before{background-attachment:scroll,fixed}}
