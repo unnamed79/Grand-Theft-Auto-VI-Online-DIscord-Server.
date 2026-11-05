@@ -1,0 +1,10 @@
+/* Supplied GTA artwork, dimmed for readable foreground content. */
+.home-atmosphere .patreon-intro{position:relative;isolation:isolate;overflow:hidden}
+.patreon-intro::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#100a1b44,#100a1bd9 75%),url('./gta6_car2.jpg') center/cover no-repeat;transform:scale(1.07);transition:transform 750ms cubic-bezier(.16,1,.3,1)}
+.home-atmosphere .patreon-intro .connection-art{visibility:hidden}
+@media(hover:hover) and (pointer:fine){.patreon-intro:hover::before{transform:scale(1)}}
+.patreon-intro:focus-within::before{transform:scale(1)}
+.community-wallpaper{position:relative;isolation:isolate;background:#100d19}
+.community-wallpaper::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#0c0a14b3,#0c0a14c4),url('./gta6_city.jpg') center/cover no-repeat}
+@media(min-width:1000px) and (prefers-reduced-motion:no-preference){.community-wallpaper::before{background-attachment:scroll,fixed}}
+@media(prefers-reduced-motion:reduce){.patreon-intro::before{transition:none;transform:none!important}}
